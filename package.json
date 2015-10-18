@@ -4,7 +4,9 @@
   "description": "Streaming React/RethinkDB example app",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "devel": "NODE_ENV=development node server.js",
+    "build": "webpack --progress --colors"
   },
   "repository": {
     "type": "git",

@@ -9,6 +9,9 @@ var r = require('rethinkdb');
 
 var production = process.env.NODE_ENV === 'production';
 
+var rethinkdb_port = 28015;
+var rethinkdb_host = process.env.RETHINKDB_HOST || 'localhost';
+
 app.use(express.static(__dirname + '/public'));
 
 if (!production) {
@@ -28,9 +31,14 @@ if (!production) {
 
 }
 
-r.connect({ host: 'rethinkdb', port: 28015 }, function(err, conn) {
-  if (err) throw err;
-  console.log("Connected to rethinkdb");
+r.connect({ host: rethinkdb_host, port: rethinkdb_port }, function(err, conn) {
+  if (err) {
+    console.error("Failed to connect to rethinkdb - host: ",
+                  rethinkdb_host, " port: ", rethinkdb_port);
+    throw err;
+  }
+  console.log("Connected to rethinkdb - host: ",
+              rethinkdb_host, " port: ", rethinkdb_port);
 });
 
 io.on('connection', function(socket) {
