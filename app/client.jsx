@@ -6,6 +6,10 @@ var ReactDOM = require('react-dom');
 
 var socket = io();
 
+socket.on('chat message', function(msg) {
+    console.log("Received message: ", msg);
+});
+
 var MessageList = React.createClass({
     render: function() {
         return (
