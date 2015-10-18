@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Streaming React/RethinkDB example app",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "repository": {
     "type": "git",
     "url": "github.com/stefaneng/rethinkdb-react"
@@ -10,6 +13,7 @@
   "author": "Stefan Eng",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "socket.io": "^1.3.7"
   }
 }
