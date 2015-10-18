@@ -1,0 +1,12 @@
+{
+  "name": "rethinkdb-react",
+  "version": "0.0.1",
+  "description": "Streaming React/RethinkDB example app",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "github.com/stefaneng/rethinkdb-react"
+  },
+  "author": "Stefan Eng",
+  "license": "ISC"
+}
