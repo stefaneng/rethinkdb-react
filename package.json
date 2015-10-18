@@ -8,5 +8,8 @@
     "url": "github.com/stefaneng/rethinkdb-react"
   },
   "author": "Stefan Eng",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
 }
