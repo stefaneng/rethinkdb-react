@@ -4,7 +4,7 @@
   "description": "Streaming React/RethinkDB example app",
   "main": "index.js",
   "scripts": {
-    "start": "webpack ./app/client.js public/dist/bundle.js --module-bind \"css=style!css\" && node index.js"
+    "start": "webpack && node index.js"
   },
   "repository": {
     "type": "git",
