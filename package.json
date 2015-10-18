@@ -4,7 +4,7 @@
   "description": "Streaming React/RethinkDB example app",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "webpack ./client.js public/dist/bundle.js && node index.js"
   },
   "repository": {
     "type": "git",
@@ -14,6 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.13.3",
-    "socket.io": "^1.3.7"
+    "socket.io": "^1.3.7",
+    "socket.io-client": "^1.3.7"
+  },
+  "devDependencies": {
+    "webpack": "^1.12.2"
   }
 }
