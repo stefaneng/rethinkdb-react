@@ -3,8 +3,11 @@ require("./style.css");
 var io = require("socket.io-client");
 var React = require('react');
 var ReactDOM = require('react-dom');
+var createStore = require('redux').createStore;
+var Provider = require('react-redux').Provider;
 
 var socket = io();
+var store = createStore(messageApp);
 
 socket.on('chat message', function(msg) {
     console.log("Received message: ", msg);
@@ -59,6 +62,8 @@ var App = React.createClass({
 });
 
 ReactDOM.render(
-    <App />,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById('app')
 );
