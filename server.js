@@ -12,11 +12,6 @@ var production = process.env.NODE_ENV === 'production';
 var rethinkdb_port = 28015;
 var rethinkdb_host = process.env.RETHINKDB_HOST || 'localhost';
 
-var createStore = require('redux').createStore;
-var messageApp = require('./app/reducers').messageApp;
-
-var store = createStore(messageApp);
-
 app.use(express.static(__dirname + '/public'));
 
 if (!production) {

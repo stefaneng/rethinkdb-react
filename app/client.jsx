@@ -3,11 +3,8 @@ require("./style.css");
 var io = require("socket.io-client");
 var React = require('react');
 var ReactDOM = require('react-dom');
-var createStore = require('redux').createStore;
-var Provider = require('react-redux').Provider;
 
 var socket = io();
-var store = createStore(messageApp);
 
 var MessageList = React.createClass({
     getInitialState: function() {
@@ -82,8 +79,6 @@ var App = React.createClass({
 });
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+    <App />,
     document.getElementById('app')
 );
