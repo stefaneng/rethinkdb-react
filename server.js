@@ -44,18 +44,47 @@ r.connect({ host: rethinkdb_host, port: rethinkdb_port }, function(err, conn) {
   }
   console.log("Connected to rethinkdb - host: ",
               rethinkdb_host, " port: ", rethinkdb_port);
-});
 
-io.on('connection', function(socket) {
-  console.log('a user connected');
+  r.db('test').tableCreate('messages').run(conn, function(err, results) {
+    // Create if does not exist
+    if (err && err.name !== 'ReqlOpFailedError') throw err;
 
-  socket.on('disconnect', function() {
-    console.log('a user disconnected');
-  });
+    console.log("Table messages create");
 
-  socket.on('chat message', function(msg) {
-    io.emit('chat message', msg);
-    console.log("Chat message: ", msg);
+    r.table('messages').changes().run(conn, function(err, cursor) {
+      if (err) throw err;
+      cursor.each(function(err, row) {
+        if (err) throw err;
+
+        io.emit('db message', row.new_val);
+        console.log(JSON.stringify(row, null, 2));
+      });
+    });
+
+
+    // Listen to socket.io
+    io.on('connection', function(socket) {
+      console.log('a user connected');
+
+      r.table('messages').orderBy('date').run(conn, function(err, cursor) {
+        if (err) throw err;
+
+        cursor.toArray(function(err, messages) {
+          socket.emit('init messages', messages);
+        });
+
+      });
+
+      socket.on('disconnect', function() {
+        console.log('a user disconnected');
+      });
+
+      socket.on('chat message', function(msg) {
+        r.table('messages').insert({message: msg, date: new Date()}).run(conn, function(err, _results){
+          if (err) throw err;
+        });
+      });
+    });
   });
 });
 

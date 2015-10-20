@@ -9,44 +9,64 @@ var Provider = require('react-redux').Provider;
 var socket = io();
 var store = createStore(messageApp);
 
-socket.on('chat message', function(msg) {
-    console.log("Received message: ", msg);
-});
-
 var MessageList = React.createClass({
+    getInitialState: function() {
+        return { messages: [] };
+    },
     render: function() {
+        var messages = this.state.messages.map(function(message) {
+            return (
+                <li key={message.id}>{message.message}</li>
+            );
+        });
         return (
-            <ul id="messages"></ul>
+            <div>
+                <ul id="messages">{messages}</ul>
+            </div>
         );
+    },
+    componentDidMount: function () {
+        socket.on('db message', function (msg) {
+            this.setState({ messages:  this.state.messages.concat(msg) });
+        }.bind(this));
+
+        socket.on('init messages', function(messages) {
+            this.setState({ messages: messages});
+        }.bind(this));
     }
 });
 
 var MessageBox = React.createClass({
     render: function() {
-        var message = this.state.message;
+        var input = this.state.input;
         return (
             <div className="messageBox">
                 <input type="text"
-                       autoComplete="off"
-                       value={message}
-                       onChange={this.handleChange}
+                       autoFocus="true"
+                       value={input}
+                       onKeyPress={this.checkEnter}
+                       onChange={this.onChange}
                 />
                 <button onClick={this.sendMessage}>Send</button>
             </div>
         );
     },
     getInitialState: function() {
-        return { message: "" };
+        return { input: "" };
     },
-    sendMessage: function() {
-        var msg = this.state.message;
+    sendMessage: function(msg) {
         if (msg !== "") {
             socket.emit('chat message', msg);
         }
-        this.setState({message: ""});
     },
-    handleChange: function(event) {
-        this.setState({message: event.target.value});
+    checkEnter: function(event) {
+        if(event.key === 'Enter') {
+            this.sendMessage(event.target.value);
+            this.setState({input: ""});
+        }
+    },
+    onChange: function(event) {
+        this.setState({input: event.target.value});
     }
 });
 
